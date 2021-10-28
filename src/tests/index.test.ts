@@ -1,8 +1,13 @@
-const calculator = require('../calculator');
+import { Server } from '../index';
+import * as http from 'http';
 
-describe('calculate', function() {
-  it('add', function() {
-    let result = calculator.add(5, 2);
-    expect(result).toBe(7);   
-  })
-})
+jest.mock('http', () => ({
+  createServer: jest.fn(() => ({ listen: jest.fn() })),
+}));
+
+describe('Server', () => {
+  it('should create server on port 5000', () => {
+    const server = new Server().startServer();
+    expect(http.createServer).toBeCalled();
+  });
+});
