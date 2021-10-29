@@ -1,9 +1,10 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import axios from 'axios';
+const url = require('url');
 
 const port = 5000;
 const BASE_URL = 'https://api.github.com/repos/';
-const axiosServices = axios.create({
+export const axiosServices = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Accept': 'application/vnd.github.v3+json',
@@ -19,16 +20,18 @@ axiosServices.interceptors.response.use(
   },
   (error) => Promise.reject(error)
 );
-
 export class Server {
   public startServer() {
     createServer((req: IncomingMessage, res: ServerResponse) => {
-      const gitURL = req.url?.replace (/^[a-z]{4}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
+
+      const queryURL = url.parse(req.url, true).query['url'];
+
+      const gitURL = queryURL.replace (/^[a-z]{4}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
       // Create a regex to match protocol, domain, and host
       const matchProtocolDomainHost = /^.*\/\/[^\/]+:?[0-9]?\//i;
-      // Replace protocol, domain and host from url, assign to `myNewUrl`
+      // Replace protocol, domain and host from url, assign to `userRepoUrl`
       const userRepoUrl = gitURL?.replace(matchProtocolDomainHost, '');
-      console.log('userRepoUrl', userRepoUrl)
+
       if (userRepoUrl !== '/') {
         if (req.method === 'GET') {
           axiosServices.get(userRepoUrl + '/pulls')
