@@ -40,6 +40,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
+    "mock-http": "^1.1.0",
     "nodemon": "^2.0.14",
     "onchange": "^7.1.0",
     "prettier": "^2.4.1",
