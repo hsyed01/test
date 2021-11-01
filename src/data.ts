@@ -22,7 +22,7 @@ axiosServices.interceptors.response.use(
 
 export function getReqUrl(req: IncomingMessage) {
   const queryURL = url.parse(req.url, true).query['url'];
-  const gitURL = queryURL.replace (/^[a-z]{4}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
+  const gitURL = queryURL?.replace (/^[a-z]{4}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
   const matchProtocolDomainHost = /^.*\/\/[^\/]+:?[0-9]?\//i;
   return gitURL?.replace(matchProtocolDomainHost, '');
 };
